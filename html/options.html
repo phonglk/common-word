@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CW Option</title>
+    <script src="../js/libs/knockout-2.2.1.js"></script>
+    <script src="../js/modules/util/bgLib.js"></script>
+    <script src="../js/libs/require.js"></script>
+    <script src="../js/requireConfig.js"></script>
+    <script src="../js/requireContent.js"></script>
+    <script src="../js/libs/jquery.js"></script>
+    <script src="../js/libs/jquery.browser.js"></script>
+    <script src="../js/libs/underscore.js"></script>
+    <script src="../js/libs/bootstrap.min.js"></script>
+    <script src="../js/libs/w5000.js"></script>
+    <script src="../js/background.js"></script>
+    <link href="../themes/kuta/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../themes/kuta/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="../themes/kuta/css/styles.css" rel="stylesheet">
+    <link href="../css/options-page.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- header -->
+<div id="header" class="navbar">
+    <div class="navbar-inner">
+        <!-- company or app name -->
+        <a class="brand hidden-phone" href="#">Common Words</a>
+        <ul class="nav">
+            <li>
+                <a href="http://vozforums.com/showthread.php?t=3205122" target="_blank">
+                    <i class="icon-large icon-globe"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/pages/Common-Words/166838803468188" target="_blank">
+                    <i class="icon-large icon-facebook"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="icon-large icon-envelope"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="icon-large icon-cog"></i>
+                </a>
+            </li>
+
+        </ul>
+        <ul class="nav pull-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-large icon-user"></i>
+                </a>
+
+                <!--<ul class="dropdown-menu dropdown-user-account">-->
+
+                    <!--<li class="account-img-container">-->
+                        <!--<img class="thumb account-img" src="../themes/kuta/images/100/images.jpg" />-->
+                    <!--</li>-->
+
+                    <!--<li class="account-info">-->
+                        <!--<h3>Amerigo Vespucci</h3>-->
+                        <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->
+                        <!--<p>-->
+                            <!--<a href="#">Edit</a> | <a href="#">Account Settings</a>-->
+                        <!--</p>-->
+                    <!--</li>-->
+
+                    <!--<li class="account-footer">-->
+                        <!--<div class="row-fluid">-->
+
+                            <!--<div class="span8">-->
+                                <!--<a class="btn btn-small btn-primary btn-flat" href="#">Change avatar</a>-->
+                            <!--</div>-->
+
+                            <!--<div class="span4 align-right">-->
+                                <!--<a class="btn btn-small btn-danger btn-flat" href="#">Logout</a>-->
+                            <!--</div>-->
+
+                        <!--</div>-->
+                    <!--</li>-->
+
+                <!--</ul>-->
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="left_layout">
+<div id="main_content" class="container-fluid">
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="well widget words">
+                <div class="widget-header ">
+                    <h3 class="title">Unknown Words</h3>
+                </div>
+                <div class="widget-nav" style="margin-bottom:10px;">
+                    <button class="btn btn-danger known" style="width:90px;"
+                            data-bind="click:delete_uw"
+                            ><i class="icon-trash icon-white"></i> Know</button>
+                </div>
+                <select id="list-unknown" multiple="multiple" size="8" style="width:99%" class="span10"
+                        data-bind="
+                        options: unknownWords,
+                        selectedOptions:uw_selected
+                        ">
+                </select>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="well widget words">
+                <div class="widget-header">
+                    <h3 class="title">Known Words</h3>
+                </div>
+                <div class="widget-nav" style="margin-bottom:10px;">
+                    <button class="btn btn-danger unknown"
+                            data-bind="click:delete_kw"
+                            style="width:90px;"><i class="icon-trash icon-white"></i> Unknow</button>
+                </div>
+                <select id="list-known" multiple="multiple" style="width:99%" size="12" class="span10"
+                        data-bind="
+                        options: knownWords,
+                        selectedOptions:kw_selected
+                        ">
+
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<ul id="sidebar" class="nav nav-pills nav-stacked">
+    <li class="">
+        <a href="#">
+            <i class="micon-tab"></i>
+            <span class="hidden-phone">Manage Words</span>
+        </a>
+    </li>
+    <!--<li class="active">-->
+        <!--<a href="routes.html">-->
+            <!--<i class="micon-github-7"></i>-->
+            <!--<span class="hidden-phone">Routes</span>-->
+        <!--</a>-->
+    <!--</li>-->
+    <!--<li class="">-->
+        <!--<a href="schedules.html">-->
+            <!--<i class="micon-calendar"></i>-->
+            <!--<span class="hidden-phone">Schedules</span>-->
+        <!--</a>-->
+    <!--</li>-->
+    <!--<li class="">-->
+        <!--<a href="busstops.html">-->
+            <!--<i class="micon-location"></i>-->
+            <!--<span class="hidden-phone">Bus stops</span>-->
+        <!--</a>-->
+    <!--</li>-->
+
+</ul>
+</div>
+<!-- addons -->
+<script src="../themes/kuta/plugins/chart-plugins.js"></script>
+<script src="../themes/kuta/plugins/jquery-ui-slider.js"></script>
+<script src="../themes/kuta/plugins/jquery.uniform.js"></script>
+<script src="../themes/kuta/plugins/chosen.jquery.min.js"></script>
+<script src="../themes/kuta/plugins/bootstrap-datepicker.js"></script>
+<script src="../themes/kuta/plugins/jquery.timePicker.min.js"></script>
+<script src="../js/modules/options-page/script.js"></script>
+</body>
+
+</html>

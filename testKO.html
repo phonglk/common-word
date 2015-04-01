@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="js/knockout-2.2.1.js"></script>
+    <style>
+        li.completed{
+            text-decoration: line-through;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="new"><button data-bind="click: add">Add</button>
+    <ul id="todo" data-bind="foreach: todos">
+        <li data-bind="css: {completed: status},click: clickItem"><span data-bind="text: work"></span></li>
+    </ul>
+<script>
+    function TodoItem(work,status){
+        var self = this;
+        self.work = ko.observable(work);
+        self.status = ko.observable(status);
+        self.clickItem=function(item){
+            console.log(item)
+            self.status(!self.status());
+        }
+    }
+    function TodoViewModel(init){
+        var self = this;
+        self.todos = ko.observableArray(init)
+        self.add=function(){
+            self.todos.push(
+                    new TodoItem(document.querySelector("#new").value,false)
+            )
+            document.querySelector("#new").value="";
+            document.querySelector("#new").focus();
+        }
+        self.clickItem=function(item){
+            console.log(item)
+        }
+    }
+    ko.applyBindings(new TodoViewModel([new TodoItem("Work1",false)]))
+</script>
+</body>
+</html>
