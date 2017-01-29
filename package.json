@@ -1,0 +1,38 @@
+{
+  "name": "common-word",
+  "version": "1.0.0",
+  "description": "Common Word Extension - Learn English",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phonglk/common-word.git"
+  },
+  "keywords": [
+    "extension",
+    "learn",
+    "english"
+  ],
+  "author": "Le Khoi-Phong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phonglk/common-word/issues"
+  },
+  "homepage": "https://github.com/phonglk/common-word#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-loader": "^6.2.10",
+    "babel-preset-modern-browsers": "^8.0.0",
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
+    "webpack": "^2.2.0"
+  }
+}

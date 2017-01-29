@@ -1,0 +1,26 @@
+{
+   "browser_action": {
+      "default_icon": {
+         "19": "icos/icon19.png",
+         "38": "icos/icon48.png"
+      },
+      "default_title": "Active CW"
+   },
+   "content_scripts": [{
+      "all_frames": false,
+      "js": [ "content.js" ],
+      "matches": [ "<all_urls>" ]
+   }],
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+   "description": "Most common words!",
+   "icons": {
+      "128": "icos/icon128.png",
+      "16": "icos/icon16.png",
+      "48": "icos/icon48.png"
+   },
+   "manifest_version": 2,
+   "name": "Common Words",
+   "permissions": [ "tabs", "bookmarks", "http://*/*", "https://*/*" ],
+   "version": "1",
+   "web_accessible_resources": [ "*" ]
+}
