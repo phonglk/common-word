@@ -1,0 +1,83 @@
+
+.@{CLASS_WORD} {
+  font-style: normal;
+  border-radius: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  display: inline !important;
+  position: relative;
+  &:hover {
+    .@{CLASS_TOOL_ADD_TO_KNOWN_LIST} {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: 0px;
+    }
+  }
+
+  &.@{CLASS_UNKNOWN_WORD} {
+    color: #fff !important;
+    background: red !important;
+  }
+
+  &.@{CLASS_KNOWN_WORD} {
+    font-style: italic;
+  }
+}
+
+.@{CLASS_TOOL_ADD_TO_KNOWN_LIST} {
+  color: black; background: yellow;
+  display: none;
+  float: none !important;
+}
+
+.@{CLASS_TOOLBAR_MOUNT_DIV} {
+  position: absolute;
+  color: black;
+  background: yellow;
+  height: 20px;
+  width: auto;
+  top: -22px;
+  line-height: 20px;
+  left: 0;
+  padding: 0px;
+  > div { 
+    > span {
+      margin: 0 2px;
+      padding: 1px;
+      cursor: pointer;
+      border: 1px solid black;
+      font-size: 10px;
+      font-weight: bold;
+      font-family: Arial, Helvetica, sans-serif;
+
+      &[disabled] {
+        color: #666;
+      }
+    }
+  }
+}
+
+@THRESHOLD_TOOLBAR_SHOW_SECOND: @THRESHOLD_TOOLBAR_SHOW/1000;
+
+.@{CLASS_PROGRESS_TO_SHOW_TOOLBAR} {
+  position: absolute;
+  height: 3px;
+  left: 0;
+  bottom: -3px;
+  background: yellow;
+  animation-name: toolbarprogress;
+  animation-duration: ~"@{THRESHOLD_TOOLBAR_SHOW_SECOND}s";
+  animation-iteration-count: 1;
+}
+@keyframes toolbarprogress {
+  from {
+    width: 0%; 
+  }
+
+  to {
+    width: 100%;
+  }
+}

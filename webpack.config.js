@@ -2,6 +2,22 @@
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
+const babel = require('babel-core');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+function getVars(p) {
+  const babelCode = babel.transformFileSync(path.resolve(p)).code;
+  const header = 'const exports = {};';
+  const footer = 'return exports;';
+  const func = new Function(header + babelCode + footer);
+  return func();
+}
+const passingVars = {
+  modifyVars: Object.assign({}, 
+    getVars('./src/const/class-name.js'), 
+    getVars('./src/const/configuration.js')
+  ),
+}
 
 module.exports = {
   entry: {
@@ -12,11 +28,19 @@ module.exports = {
     path: path.join(__dirname, './dist/chrome/'),
     filename: '[name].js'
   },
+  node: {
+    fs: "empty"
+  },
+  devtool: 'source-map',
   module: {
     rules: [
       {
-        test: /\.css|\.less$/,
-        loader: 'style-loader!css-loader!less-loader',
+        test: /.less$/,
+        // loader: 'style-loader!css-loader!less-loader?'+JSON.stringify(passingVars),
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader', 
+          loader:'css-loader!less-loader?'+JSON.stringify(passingVars)
+        })
       },
       // {
       //   test: /\.(eot|woff|woff2|ttf)(\?.*$|$)/,
@@ -27,7 +51,7 @@ module.exports = {
       //   loader: 'url-loader?limit=30000&name=./assert/[name].[ext]'
       // },
       {
-        test: /\.jsx$|\.js$|\.es6$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
@@ -37,5 +61,19 @@ module.exports = {
       // }
     ]
   },
-  plugins: []
+  resolve: {
+    extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, 'src'),
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin("style.css"),
+    new webpack.optimize.OccurrenceOrderPlugin(true),
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require(path.join(__dirname, './dist/chrome/standard-manifest.json'))
+    })
+  ]
 };
