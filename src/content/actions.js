@@ -1,5 +1,5 @@
 import { info } from '../common/log';
-import { bindToolbar, removeToolbar } from './toolbar';
+import { bindToolbar, removeToolbar } from './mounting';
 import { getSync, setSync } from '../common/storage';
 import {
   CLASS_PROGRESS_TO_SHOW_TOOLBAR,
@@ -45,10 +45,10 @@ export function actionUpdateKnownWord({ word, targetNode }) {
   info(`known ${word}`);
 }
 
-export function showToolbar({ word, targetNode, event }) {
+export function showToolbar({ word, targetNode, event, wordListMap }) {
   console.log('show');
   targetNode.attributes.isToolbarShow = true; // eslint-disable-line no-param-reassign
-  bindToolbar({ word, targetNode, event }, {
+  bindToolbar({ word, targetNode, event, wordListMap }, {
     actionUpdateKnownWord: actionUpdateKnownWord.bind(null, { word, targetNode }),
   });
 }

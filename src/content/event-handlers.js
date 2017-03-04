@@ -22,7 +22,8 @@ export function mouseenterHandler(word, replacementNode, event) {
   if (targetNode.attributes.isToolbarShow !== true) {
     showProgressBar({ targetNode });
   }
-  targetNode.attributes.enterTO = setTimeout(showToolbar.bind(null, { word, targetNode, event })
+  const wordListMap = this.wordListMap;
+  targetNode.attributes.enterTO = setTimeout(showToolbar.bind(null, { word, targetNode, event, wordListMap })
                                                                       , THRESHOLD_TOOLBAR_SHOW);
 }
 

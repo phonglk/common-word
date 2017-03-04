@@ -13,9 +13,10 @@ export default class Toolbar extends React.Component {
     // const clickKnown = this.clickKnown.bind(this);
     return (
       <div>
-        <span onClick={this.clickKnown}>Known</span>
-        <span disabled title="The feature is not available yet">Definition</span>
-        <span disabled title="The feature is not available yet">Collocation</span>
+        {this.props.meta ? `[${this.props.meta.rank}]` : ''}
+        <span btn onClick={this.clickKnown}>Known</span>
+        <span btn disabled title="The feature is not available yet">Definition</span>
+        <span btn disabled title="The feature is not available yet">Collocation</span>
       </div>
     );
   }

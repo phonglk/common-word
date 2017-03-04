@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 32);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -207,8 +207,32 @@ exports._set = _set;
 exports._get = _get;
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+const CLASS_PREFIX = 'extension-cw--';
+const CLASS_WORD = exports.CLASS_WORD = CLASS_PREFIX + 'word';
+const CLASS_UNKNOWN_WORD = exports.CLASS_UNKNOWN_WORD = CLASS_PREFIX + 'word--unknown';
+const CLASS_KNOWN_WORD = exports.CLASS_KNOWN_WORD = CLASS_PREFIX + 'word--known';
+
+const CLASS_TOOL_ADD_TO_KNOWN_LIST = exports.CLASS_TOOL_ADD_TO_KNOWN_LIST = CLASS_PREFIX + 'tool--known';
+const CLASS_TOOLBAR_MOUNT_DIV = exports.CLASS_TOOLBAR_MOUNT_DIV = CLASS_PREFIX + 'tool--div-mount';
+const CLASS_PROGRESS_TO_SHOW_TOOLBAR = exports.CLASS_PROGRESS_TO_SHOW_TOOLBAR = CLASS_PREFIX + 'progress--toolbar-enable';
+const CLASS_SIDEBAR_WRAP = exports.CLASS_SIDEBAR_WRAP = CLASS_PREFIX + 'sidebar--wrapper';
+const CLASS_SIDEBAR_WORDLIST = exports.CLASS_SIDEBAR_WORDLIST = CLASS_PREFIX + 'sidebar--wordlist';
+const CLASS_SIDEBAR_KNOWN_WORD = exports.CLASS_SIDEBAR_KNOWN_WORD = CLASS_PREFIX + 'sidebar--known-word';
+const CLASS_SIDEBAR_TOOLBAR = exports.CLASS_SIDEBAR_TOOLBAR = CLASS_PREFIX + 'sidebar--toolbar';
+const PROP_WORD = exports.PROP_WORD = CLASS_PREFIX + 'word';
+
+/***/ }),
+/* 3 */,
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -234,7 +258,7 @@ exports.sendMessageToTab = sendMessageToTab;
 exports.addMessageListener = addMessageListener;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -246,43 +270,20 @@ Object.defineProperty(exports, "__esModule", {
 const EVENT_BROWSER_ACTION_CLICK = exports.EVENT_BROWSER_ACTION_CLICK = 'EVENT_BROWSER_ACTION_CLICK';
 
 /***/ }),
-/* 5 */,
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-const CLASS_PREFIX = 'extension-cw--';
-const CLASS_WORD = exports.CLASS_WORD = CLASS_PREFIX + 'word';
-const CLASS_UNKNOWN_WORD = exports.CLASS_UNKNOWN_WORD = CLASS_PREFIX + 'word--unknown';
-const CLASS_KNOWN_WORD = exports.CLASS_KNOWN_WORD = CLASS_PREFIX + 'word--known';
-
-const CLASS_TOOL_ADD_TO_KNOWN_LIST = exports.CLASS_TOOL_ADD_TO_KNOWN_LIST = CLASS_PREFIX + 'tool--known';
-const CLASS_TOOLBAR_MOUNT_DIV = exports.CLASS_TOOLBAR_MOUNT_DIV = CLASS_PREFIX + 'tool--div-mount';
-const CLASS_PROGRESS_TO_SHOW_TOOLBAR = exports.CLASS_PROGRESS_TO_SHOW_TOOLBAR = CLASS_PREFIX + 'progress--toolbar-enable';
-const PROP_WORD = exports.PROP_WORD = CLASS_PREFIX + 'word';
+module.exports = (__webpack_require__(8))(78);
 
 /***/ }),
-/* 7 */,
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = (__webpack_require__(9))(78);
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = standard;
 
 /***/ }),
-/* 10 */,
-/* 11 */,
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -291,111 +292,46 @@ module.exports = standard;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const THRESHOLD_TOOLBAR_SHOW = exports.THRESHOLD_TOOLBAR_SHOW = 800;
-const THRESHOLD_TOOLBAR_PROGRESS_SHOW = exports.THRESHOLD_TOOLBAR_PROGRESS_SHOW = 51;
+exports.updateKnownWord = exports.getKnownList = undefined;
 
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.hideWord = undefined;
-
-let updateKnownWordStorage = function () {
-  var _ref = _asyncToGenerator(function* ({ word }) {
+let getKnownList = exports.getKnownList = function () {
+  var _ref = _asyncToGenerator(function* () {
     const knownList = yield (0, _storage.getSync)('knownList');
     const selectedWordList = yield (0, _storage.getSync)('selectedWordList');
-    const list = knownList[selectedWordList];
-    if (list) {
-      if (!list.find(function (entry) {
-        return entry.word === word;
-      })) {
-        const newEntry = { word, date: new Date().getTime(), sentence: '' };
-        list.push(newEntry);
-        yield (0, _storage.setSync)('knownList', Object.assign({}, knownList, {
-          [selectedWordList]: list
-        }));
-        (0, _log.info)(`add ${word} into knowlist`);
-      }
-    }
+    const list = knownList[selectedWordList] || [];
+    return { list, knownList, selectedWordList };
   });
 
-  return function updateKnownWordStorage(_x) {
+  return function getKnownList() {
     return _ref.apply(this, arguments);
   };
 }();
 
-let hideWord = exports.hideWord = function () {
-  var _ref2 = _asyncToGenerator(function* ({ word, targetNode }) {
-    yield updateKnownWordStorage({ word });
-    [...document.querySelectorAll(`.${_className.CLASS_WORD}[${_className.PROP_WORD}="${word}"]`)].forEach(function (node) {
-      node.classList.remove(_className.CLASS_UNKNOWN_WORD);
-      node.classList.add(_className.CLASS_KNOWN_WORD);
-    });
-    hideToolbar({ targetNode });
+let updateKnownWord = exports.updateKnownWord = function () {
+  var _ref2 = _asyncToGenerator(function* ({ word }) {
+    const { list, knownList, selectedWordList } = getKnownList();
+    if (!list.find(function (entry) {
+      return entry.word === word;
+    })) {
+      const newEntry = { word, date: new Date().getTime(), sentence: '' };
+      list.push(newEntry);
+      yield (0, _storage.setSync)('knownList', Object.assign({}, knownList, {
+        [selectedWordList]: list
+      }));
+    }
   });
 
-  return function hideWord(_x2) {
+  return function updateKnownWord(_x) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.hideToolbar = hideToolbar;
-exports.actionUpdateKnownWord = actionUpdateKnownWord;
-exports.showToolbar = showToolbar;
-exports.showProgressBar = showProgressBar;
-exports.removeProgressBar = removeProgressBar;
-
-var _log = __webpack_require__(0);
-
-var _toolbar = __webpack_require__(14);
-
 var _storage = __webpack_require__(1);
-
-var _className = __webpack_require__(6);
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-function hideToolbar({ targetNode }) {
-  console.log('clear');
-  delete targetNode.attributes.isToolbarShow; // eslint-disable-line no-param-reassign
-  (0, _toolbar.removeToolbar)({ targetNode });
-}
-
-function actionUpdateKnownWord({ word, targetNode }) {
-  hideWord({ word, targetNode });
-  (0, _log.info)(`known ${word}`);
-}
-
-function showToolbar({ word, targetNode, event }) {
-  console.log('show');
-  targetNode.attributes.isToolbarShow = true; // eslint-disable-line no-param-reassign
-  (0, _toolbar.bindToolbar)({ word, targetNode, event }, {
-    actionUpdateKnownWord: actionUpdateKnownWord.bind(null, { word, targetNode })
-  });
-}
-
-function showProgressBar({ targetNode }) {
-  let progressNode = targetNode.querySelector(`.${_className.CLASS_PROGRESS_TO_SHOW_TOOLBAR}`);
-  if (!progressNode) {
-    progressNode = document.createElement('div');
-    progressNode.classList.add(_className.CLASS_PROGRESS_TO_SHOW_TOOLBAR);
-    targetNode.append(progressNode);
-  }
-}
-
-function removeProgressBar({ targetNode }) {
-  const progressNode = targetNode.querySelector(`.${_className.CLASS_PROGRESS_TO_SHOW_TOOLBAR}`);
-  if (progressNode) progressNode.remove();
-}
-
 /***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -405,29 +341,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.bindToolbar = bindToolbar;
+exports.mountSideBar = mountSideBar;
 exports.removeToolbar = removeToolbar;
 
-var _reactDom = __webpack_require__(25);
+var _reactDom = __webpack_require__(30);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _react = __webpack_require__(8);
+var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _toolbar = __webpack_require__(19);
+var _toolbar = __webpack_require__(24);
 
 var _toolbar2 = _interopRequireDefault(_toolbar);
 
-var _className = __webpack_require__(6);
+var _sidebar = __webpack_require__(23);
+
+var _sidebar2 = _interopRequireDefault(_sidebar);
+
+var _className = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function bindToolbar({ word, targetNode, event }, actions) {
+function bindToolbar({ word, targetNode, event, wordListMap }, actions) {
   const mountNode = document.createElement('div');
   mountNode.classList.add(_className.CLASS_TOOLBAR_MOUNT_DIV);
   targetNode.appendChild(mountNode);
-  _reactDom2.default.render(_react2.default.createElement(_toolbar2.default, { word: word, node: targetNode, actions: actions }), mountNode);
+  _reactDom2.default.render(_react2.default.createElement(_toolbar2.default, { word: word, node: targetNode, actions: actions, meta: wordListMap[word] }), mountNode);
+  return mountNode;
+}
+
+function mountSideBar() {
+  window.top.__cw__words = [];
+  window.top.__cw__words_count = 0;
+  const mountNode = document.createElement('div');
+  document.body.appendChild(mountNode);
+  _reactDom2.default.render(_react2.default.createElement(_sidebar2.default, { window: window.top }), mountNode);
   return mountNode;
 }
 
@@ -442,13 +392,81 @@ function removeToolbar({ targetNode }) {
 }
 
 /***/ }),
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mouseenterHandler = mouseenterHandler;
+exports.mouseleaveHandler = mouseleaveHandler;
+
+var _actions = __webpack_require__(22);
+
+var _className = __webpack_require__(2);
+
+var _configuration = __webpack_require__(20);
+
+function mouseenterHandler(word, replacementNode, event) {
+  const targetNode = event.target;
+  if (targetNode !== replacementNode) return;
+  if (!targetNode.classList.contains(_className.CLASS_UNKNOWN_WORD)) return;
+  clearTimeout(targetNode.attributes.leaveTO);
+  clearTimeout(targetNode.attributes.enterTO);
+  if (targetNode.attributes.isToolbarShow !== true) {
+    (0, _actions.showProgressBar)({ targetNode });
+  }
+  const wordListMap = this.wordListMap;
+  targetNode.attributes.enterTO = setTimeout(_actions.showToolbar.bind(null, { word, targetNode, event, wordListMap }), _configuration.THRESHOLD_TOOLBAR_SHOW);
+}
+
+function mouseleaveHandler(word, targetNode, event) {
+  if (!targetNode.classList.contains(_className.CLASS_UNKNOWN_WORD)) return;
+  clearTimeout(targetNode.attributes.leaveTO);
+  clearTimeout(targetNode.attributes.enterTO);
+  (0, _actions.removeProgressBar)({ targetNode });
+  targetNode.attributes.leaveTO = setTimeout(_actions.hideToolbar.bind(null, { word, targetNode, event }), 1000);
+}
+
+/***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.isTopWindow = isTopWindow;
+exports.getTopWindow = getTopWindow;
+exports.isZeroIframe = isZeroIframe;
+function isTopWindow() {
+  return window === window.top;
+}
+
+function getTopWindow() {
+  return window.top;
+}
+
+function isZeroIframe() {
+  return window.innerWidth === 0 && window.innerHeight === 0;
+}
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1090,9 +1108,128 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 17 */,
 /* 18 */,
 /* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = (__webpack_require__(8))(76);
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+const THRESHOLD_TOOLBAR_SHOW = exports.THRESHOLD_TOOLBAR_SHOW = 800;
+const THRESHOLD_TOOLBAR_PROGRESS_SHOW = exports.THRESHOLD_TOOLBAR_PROGRESS_SHOW = 51;
+
+/***/ }),
+/* 21 */,
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hideWord = undefined;
+
+let updateKnownWordStorage = function () {
+  var _ref = _asyncToGenerator(function* ({ word }) {
+    const knownList = yield (0, _storage.getSync)('knownList');
+    const selectedWordList = yield (0, _storage.getSync)('selectedWordList');
+    const list = knownList[selectedWordList];
+    if (list) {
+      if (!list.find(function (entry) {
+        return entry.word === word;
+      })) {
+        const newEntry = { word, date: new Date().getTime(), sentence: '' };
+        list.push(newEntry);
+        yield (0, _storage.setSync)('knownList', Object.assign({}, knownList, {
+          [selectedWordList]: list
+        }));
+        (0, _log.info)(`add ${word} into knowlist`);
+      }
+    }
+  });
+
+  return function updateKnownWordStorage(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+let hideWord = exports.hideWord = function () {
+  var _ref2 = _asyncToGenerator(function* ({ word, targetNode }) {
+    yield updateKnownWordStorage({ word });
+    [...document.querySelectorAll(`.${_className.CLASS_WORD}[${_className.PROP_WORD}="${word}"]`)].forEach(function (node) {
+      node.classList.remove(_className.CLASS_UNKNOWN_WORD);
+      node.classList.add(_className.CLASS_KNOWN_WORD);
+    });
+    hideToolbar({ targetNode });
+  });
+
+  return function hideWord(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.hideToolbar = hideToolbar;
+exports.actionUpdateKnownWord = actionUpdateKnownWord;
+exports.showToolbar = showToolbar;
+exports.showProgressBar = showProgressBar;
+exports.removeProgressBar = removeProgressBar;
+
+var _log = __webpack_require__(0);
+
+var _mounting = __webpack_require__(10);
+
+var _storage = __webpack_require__(1);
+
+var _className = __webpack_require__(2);
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function hideToolbar({ targetNode }) {
+  console.log('clear');
+  delete targetNode.attributes.isToolbarShow; // eslint-disable-line no-param-reassign
+  (0, _mounting.removeToolbar)({ targetNode });
+}
+
+function actionUpdateKnownWord({ word, targetNode }) {
+  hideWord({ word, targetNode });
+  (0, _log.info)(`known ${word}`);
+}
+
+function showToolbar({ word, targetNode, event, wordListMap }) {
+  console.log('show');
+  targetNode.attributes.isToolbarShow = true; // eslint-disable-line no-param-reassign
+  (0, _mounting.bindToolbar)({ word, targetNode, event, wordListMap }, {
+    actionUpdateKnownWord: actionUpdateKnownWord.bind(null, { word, targetNode })
+  });
+}
+
+function showProgressBar({ targetNode }) {
+  let progressNode = targetNode.querySelector(`.${_className.CLASS_PROGRESS_TO_SHOW_TOOLBAR}`);
+  if (!progressNode) {
+    progressNode = document.createElement('div');
+    progressNode.classList.add(_className.CLASS_PROGRESS_TO_SHOW_TOOLBAR);
+    targetNode.append(progressNode);
+  }
+}
+
+function removeProgressBar({ targetNode }) {
+  const progressNode = targetNode.querySelector(`.${_className.CLASS_PROGRESS_TO_SHOW_TOOLBAR}`);
+  if (progressNode) progressNode.remove();
+}
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1102,7 +1239,156 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(8);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _log = __webpack_require__(0);
+
+var _wordStorage = __webpack_require__(9);
+
+var _className = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function sortWordList(list, sortBy, dir = 'desc') {
+  if (['rank', 'count'].indexOf(sortBy) === -1) throw new Error(`sortBy ${sortBy} is not supported`);
+  const sortFunc = dir === 'desc' ? function (b, a) {
+    return a[sortBy] - b[sortBy];
+  } : function (a, b) {
+    return a[sortBy] - b[sortBy];
+  };
+  return list.slice().sort(sortFunc);
+}
+
+class SideBar extends _react2.default.Component {
+  constructor(props) {
+    super(props);
+    (0, _log.info)('Mount sidebar');
+    this.props.window.__cw__addWord = this.addWord.bind(this);
+    this.checkboxChange = this.checkboxChange.bind(this);
+    this.state = {
+      words: [],
+      sort: 'rank',
+      sortDir: 'asc',
+      hideKnown: true
+    };
+    this.tempState = {
+      words: [],
+      lastUpdate: new Date(),
+      updateTO: null
+    };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(nextState.words, this.state.words) || !_.isEqual(nextState.sort, this.state.sort) || !_.isEqual(nextState.sortBy, this.state.sortBy) || !_.isEqual(nextState.hideKnown, this.state.hideKnown);
+  }
+
+  addWord(wordObj) {
+    var _this = this;
+
+    const words = this.tempState.words;
+    const entry = words.find(function (e) {
+      return e.word === wordObj.word;
+    });
+    if (!entry) {
+      const newObj = _extends({}, wordObj, { count: 1 });
+      words.push(newObj);
+    } else {
+      entry.count += 1;
+    }
+    // throttling
+    if (new Date().getTime() - this.tempState.lastUpdate > 800) {
+      this.setState({ words });
+      this.tempState.lastUpdate = new Date().getTime();
+      clearTimeout(this.tempState.updateTO);
+    } else {
+      this.tempState.updateTO = setTimeout(function () {
+        _this.setState({ words });
+      }, 1000);
+    }
+  }
+
+  checkboxChange() {
+    this.setState({ hideKnown: !this.state.hideKnown });
+  }
+
+  render() {
+    var _this2 = this;
+
+    // const clickKnown = this.clickKnown.bind(this);
+    const words = this.state.words;
+    const sortedList = sortWordList(words, this.state.sort, this.state.sortDir);
+    const filteredList = this.state.hideKnown ? sortedList.filter(function (word) {
+      return !word.isKnown;
+    }) : sortedList;
+    const sortByRank = function sortByRank() {
+      return _this2.setState({ sort: 'rank', sortDir: 'asc' });
+    };
+    const sortByCount = function sortByCount() {
+      return _this2.setState({ sort: 'count', sortDir: 'desc' });
+    };
+    (0, _log.info)('render');
+    return _react2.default.createElement(
+      'div',
+      { className: _className.CLASS_SIDEBAR_WRAP },
+      _react2.default.createElement(
+        'div',
+        { className: _className.CLASS_SIDEBAR_TOOLBAR },
+        'Sort \xA0',
+        _react2.default.createElement(
+          'a',
+          { href: '#rank', onClick: sortByRank, className: this.state.sort === 'rank' ? 'selected' : true },
+          'Rank'
+        ),
+        _react2.default.createElement(
+          'a',
+          { href: '#count', onClick: sortByCount, className: this.state.sort === 'count' ? 'selected' : true },
+          'Frequency'
+        ),
+        '\xA0',
+        _react2.default.createElement(
+          'label',
+          null,
+          _react2.default.createElement('input', { type: 'checkbox', checked: this.state.hideKnown, onChange: this.checkboxChange }),
+          '\xA0Hide Known'
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: _className.CLASS_SIDEBAR_WORDLIST },
+        filteredList.map(function (w) {
+          return _react2.default.createElement(
+            'div',
+            { key: w.rank, className: w.isKnown ? _className.CLASS_SIDEBAR_KNOWN_WORD : '' },
+            w.word,
+            ' [',
+            w.rank,
+            '] (',
+            w.count,
+            ')'
+          );
+        })
+      )
+    );
+  }
+}
+exports.default = SideBar;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1120,22 +1406,23 @@ class Toolbar extends _react2.default.Component {
   render() {
     // const clickKnown = this.clickKnown.bind(this);
     return _react2.default.createElement(
-      "div",
+      'div',
       null,
+      this.props.meta ? `[${this.props.meta.rank}]` : '',
       _react2.default.createElement(
-        "span",
-        { onClick: this.clickKnown },
-        "Known"
+        'span',
+        { btn: true, onClick: this.clickKnown },
+        'Known'
       ),
       _react2.default.createElement(
-        "span",
-        { disabled: true, title: "The feature is not available yet" },
-        "Definition"
+        'span',
+        { btn: true, disabled: true, title: 'The feature is not available yet' },
+        'Definition'
       ),
       _react2.default.createElement(
-        "span",
-        { disabled: true, title: "The feature is not available yet" },
-        "Collocation"
+        'span',
+        { btn: true, disabled: true, title: 'The feature is not available yet' },
+        'Collocation'
       )
     );
   }
@@ -1143,34 +1430,38 @@ class Toolbar extends _react2.default.Component {
 exports.default = Toolbar;
 
 /***/ }),
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(9))(77);
+module.exports = (__webpack_require__(8))(77);
 
 /***/ }),
-/* 26 */,
-/* 27 */
+/* 31 */,
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 let highlight = function () {
   var _ref = _asyncToGenerator(function* () {
     let count = 0;
     (0, _findandreplacedomtext2.default)(document.body, {
       find: wordListRegExp,
+      preset: 'prose',
       replace: function replace(s) {
+        const word = s.text.toLowerCase();
+        if (_lodash2.default.isUndefined(wordListMap[word])) return s.text;
         count += 1;
         const replacementNode = document.createElement('span');
         const textNode = document.createTextNode(s.text);
-        const word = s.text.toLowerCase();
         replacementNode.appendChild(textNode);
         replacementNode.classList.add(_className.CLASS_WORD);
         if (knownListMap[word]) {
@@ -1180,9 +1471,15 @@ let highlight = function () {
         }
         replacementNode.setAttribute(_className.PROP_WORD, word);
 
-        replacementNode.addEventListener('mouseenter', _eventHandlers.mouseenterHandler.bind(null, word, replacementNode));
+        replacementNode.addEventListener('mouseenter', _eventHandlers.mouseenterHandler.bind({ wordListMap }, word, replacementNode));
         replacementNode.addEventListener('mouseleave', _eventHandlers.mouseleaveHandler.bind(null, word, replacementNode));
+        window.top.__cw__addWord(_extends({}, wordListMap[word], {
+          isKnown: !_lodash2.default.isUndefined(knownListMap[word])
+        }));
         return replacementNode;
+      },
+      filterElements: function filterElements(el) {
+        return NON_PROSE_ELEMENTS.indexOf(el.nodeName.toLowerCase()) === -1 && el.className !== _className.CLASS_SIDEBAR_WRAP;
       }
     });
     (0, _log.info)(`Matched ${count} words`);
@@ -1195,16 +1492,21 @@ let highlight = function () {
 
 let active = function () {
   var _ref2 = _asyncToGenerator(function* ({ wordList }) {
-    __webpack_require__(15);
-    const allKnownList = yield (0, _storage.getSync)('knownList');
-    const knownList = allKnownList[wordList.id];
-    if (knownList) {
-      knownList.forEach(function (knownWord) {
-        knownListMap[knownWord.word.toLowerCase()] = knownWord;
-      });
+    if ((0, _windowHelper.isTopWindow)()) {
+      (0, _mounting.mountSideBar)();
+    } else if ((0, _windowHelper.isZeroIframe)()) {
+      (0, _log.info)('ignore content due to zero size iframe');
+      return;
+    } else if (!window.top.__cw__addWord) {
+      setTimeout(active.bind(null, { wordList }), 50);
+      return;
     }
-    if (wordListMap === null) {
-      wordListMap = {};
+    (0, _log.info)('active', window);
+    const { list } = yield (0, _wordStorage.getKnownList)();
+    list.forEach(function (knownWord) {
+      knownListMap[knownWord.word.toLowerCase()] = knownWord;
+    });
+    if (_lodash2.default.isEmpty(wordListMap)) {
       const words = [];
       wordList.list.forEach(function (word) {
         wordListMap[word.word] = word;
@@ -1212,7 +1514,6 @@ let active = function () {
       });
       wordListRegExp = new RegExp(`\\b(${words.join('|')})\\b`, 'gi');
     }
-    (0, _log.info)('active');
 
     highlight();
   });
@@ -1222,21 +1523,29 @@ let active = function () {
   };
 }();
 
-var _findandreplacedomtext = __webpack_require__(16);
+var _findandreplacedomtext = __webpack_require__(17);
 
 var _findandreplacedomtext2 = _interopRequireDefault(_findandreplacedomtext);
 
-var _storage = __webpack_require__(1);
+var _lodash = __webpack_require__(19);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _wordStorage = __webpack_require__(9);
 
 var _log = __webpack_require__(0);
 
-var _communication = __webpack_require__(3);
+var _communication = __webpack_require__(4);
 
-var _eventHandlers = __webpack_require__(31);
+var _windowHelper = __webpack_require__(15);
 
-var _events = __webpack_require__(4);
+var _eventHandlers = __webpack_require__(14);
 
-var _className = __webpack_require__(6);
+var _mounting = __webpack_require__(10);
+
+var _events = __webpack_require__(5);
+
+var _className = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1244,11 +1553,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 // import isUndefined from 'lodash/isUndefined';
 
 
+function nerverHappen() {
+  __webpack_require__(16);
+}
+
 document.addEventListener('DOMContentLoaded', function () {});
 
 const knownListMap = {};
-let wordListMap = null;
+const wordListMap = {};
 let wordListRegExp = null;
+const NON_PROSE_ELEMENTS = ['br', 'hr', 'script', 'noscript', 'style', 'img', 'video', 'audio', 'canvas', 'svg', 'map', 'object', 'input', 'textarea', 'select', 'option', 'optgroup', 'button'];
+
 
 function addListener() {
   (0, _communication.addMessageListener)(function (msg, sender, sendResponse) {
@@ -1263,48 +1578,6 @@ function addListener() {
 addListener();
 
 (0, _log.info)('CW_Content');
-
-/***/ }),
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.mouseenterHandler = mouseenterHandler;
-exports.mouseleaveHandler = mouseleaveHandler;
-
-var _actions = __webpack_require__(13);
-
-var _className = __webpack_require__(6);
-
-var _configuration = __webpack_require__(12);
-
-function mouseenterHandler(word, replacementNode, event) {
-  const targetNode = event.target;
-  if (targetNode !== replacementNode) return;
-  if (!targetNode.classList.contains(_className.CLASS_UNKNOWN_WORD)) return;
-  clearTimeout(targetNode.attributes.leaveTO);
-  clearTimeout(targetNode.attributes.enterTO);
-  if (targetNode.attributes.isToolbarShow !== true) {
-    (0, _actions.showProgressBar)({ targetNode });
-  }
-  targetNode.attributes.enterTO = setTimeout(_actions.showToolbar.bind(null, { word, targetNode, event }), _configuration.THRESHOLD_TOOLBAR_SHOW);
-}
-
-function mouseleaveHandler(word, targetNode, event) {
-  if (!targetNode.classList.contains(_className.CLASS_UNKNOWN_WORD)) return;
-  clearTimeout(targetNode.attributes.leaveTO);
-  clearTimeout(targetNode.attributes.enterTO);
-  (0, _actions.removeProgressBar)({ targetNode });
-  targetNode.attributes.leaveTO = setTimeout(_actions.hideToolbar.bind(null, { word, targetNode, event }), 1000);
-}
 
 /***/ })
 /******/ ]);
