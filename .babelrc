@@ -1,0 +1,7 @@
+{
+  "presets": [
+    "react",
+    ["modern-browsers", { "objectRest": true }], 
+    "stage-1"
+  ]
+}

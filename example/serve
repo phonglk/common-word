@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "Please go to http://localhost:8888 for development if auto launch is fail"
+python -mwebbrowser http://localhost:8888
+python -m SimpleHTTPServer 8888

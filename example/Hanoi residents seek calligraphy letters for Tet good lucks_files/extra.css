@@ -1,0 +1,42 @@
+/* 
+    Document   : extra
+    Created on : Sep 26, 2012, 2:38:31 PM
+    Author     : HoanVV
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.ttnservice_header{background: url("../images/TuoiTreNewsServices.gif") no-repeat scroll 0 0 transparent; width:298px; height: 40px}
+.ttnservice{border: 1px solid #E1E1E1; padding-bottom:10px; margin-bottom:10px;text-align:left;overflow:hidden;}
+
+.ttnservice_cat{ width:288px; float:left; padding-left:10px; font-family: HelveticaCondensedBold,sans-serif; font-weight:normal; list-style:none outside none; text-transform:uppercase; font-size:16px;}
+.ttnservice_title{ padding:5px 0 5px 10px; float:left; padding-left:10px; }
+.ttnservice_title a{font-weight:bold; color:#015D99; font-size:14px;}
+.ttnservice_thumbnail{float:left; width:90px; padding-left: 10px;}
+.ttnservice_thumbnail a img{border: 1px solid #E1E1E1;}
+.ttnservice_headline{float:left; width: 180px; padding-left:10px; line-height:17px;}
+.ttnservice_line{margin:12px 0; background: url("../images/ttnserviceline.png") no-repeat scroll 0 0 transparent; width:298px; height:5px; float:left}
+.ttnservice_middle{clear:both;}
+.list-customlist{padding-bottom: 10px;}
+.list-customlist li{ 
+    background: url("../images/icon-link.png") no-repeat scroll 0 -163px transparent;
+    display: block;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 14px;
+    list-style: none outside none;
+    padding: 0 0 10px 10px;
+    margin-left: 10px;text-align:left;
+}
+.list-customlist li a {font-weight:bold; color:#015D99;}
+.block-right-custom{
+    border: 1px solid #E1E1E1;
+    margin-bottom: 10px;
+    width: 298px;
+}

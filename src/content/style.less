@@ -1,0 +1,142 @@
+@my-blue: #0061cf;
+
+.@{CLASS_WORD} {
+  font-style: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  border-radius: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  display: inline !important;
+  position: relative;
+  &:hover {
+    .@{CLASS_TOOL_ADD_TO_KNOWN_LIST} {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: 0px;
+    }
+  }
+
+  &.@{CLASS_UNKNOWN_WORD} {
+    color: #fff !important;
+    background: red !important;
+  }
+
+  &.@{CLASS_KNOWN_WORD} {
+    font-style: italic;
+  }
+}
+
+.@{CLASS_TOOL_ADD_TO_KNOWN_LIST} {
+  color: black; background: yellow;
+  display: none;
+  float: none !important;
+}
+
+.@{CLASS_TOOLBAR_MOUNT_DIV} {
+  position: absolute;
+  color: black;
+  background: yellow;
+  height: 20px;
+  width: auto;
+  top: -22px;
+  line-height: 20px;
+  left: 0;
+  padding: 0px;
+  > div { 
+    font-size: 10px;
+    > span {
+      padding: 1px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 0 2px;
+      border: 1px solid black;
+      font-family: Arial, Helvetica, sans-serif;
+      
+      &[disabled] {
+        color: #666;
+      }
+    }
+  }
+}
+
+@THRESHOLD_TOOLBAR_SHOW_SECOND: @THRESHOLD_TOOLBAR_SHOW/1000;
+
+.@{CLASS_PROGRESS_TO_SHOW_TOOLBAR} {
+  position: absolute;
+  height: 3px;
+  left: 0;
+  bottom: -3px;
+  background: yellow;
+  animation-name: toolbarprogress;
+  animation-duration: ~"@{THRESHOLD_TOOLBAR_SHOW_SECOND}s";
+  animation-iteration-count: 1;
+}
+@keyframes toolbarprogress {
+  from {
+    width: 0%; 
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.@{CLASS_SIDEBAR_WRAP} {
+  position: fixed;
+  top:0;
+  left:0;
+  width: 200px;
+  background: rgba(255,255,255,0.9);
+  border-right: 1px solid rgba(0,0,0,0.8);
+  height: 100%;
+  z-index: 99999999999;
+  display: flex;
+  font-size: 11px;
+  flex-direction: column;
+
+  label {
+    font-weight: normal;
+  }
+
+  .@{CLASS_SIDEBAR_TOOLBAR} {
+    border-bottom: 1px solid rgba(0,0,0,0.8);
+    line-height: 30px;
+    > a {
+      padding: 0 2px;
+      display: inline-block;
+      font-size: 11px;
+      line-height: 20px;
+      border: 1px solid @my-blue;
+      color: black;
+      &.selected {
+        background: @my-blue;
+        color: white;
+      }
+    }
+  }
+  .@{CLASS_SIDEBAR_WORDLIST} {
+    overflow: auto;
+    font-size: 14px;
+    color: #333;
+    background: rgba(255,255,255,0.8);
+    > div {
+      padding-left: 10px;
+      transition: all 0.3s;
+      &:hover {
+        background: @my-blue;
+        color: #fff;
+      }
+      &.@{CLASS_SIDEBAR_KNOWN_WORD} {
+        color: #999;
+        &:hover {
+          color: #ccc;
+        }
+      }
+    }
+  }
+}

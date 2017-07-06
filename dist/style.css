@@ -1,0 +1,129 @@
+.extension-cw--word {
+  font-style: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  border-radius: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  display: inline !important;
+  position: relative;
+}
+.extension-cw--word:hover .extension-cw--tool--known {
+  display: block;
+  position: absolute;
+  top: -20px;
+  left: 0px;
+}
+.extension-cw--word.extension-cw--word--unknown {
+  color: #fff !important;
+  background: red !important;
+}
+.extension-cw--word.extension-cw--word--known {
+  font-style: italic;
+}
+.extension-cw--tool--known {
+  color: black;
+  background: yellow;
+  display: none;
+  float: none !important;
+}
+.extension-cw--tool--div-mount {
+  position: absolute;
+  color: black;
+  background: yellow;
+  height: 20px;
+  width: auto;
+  top: -22px;
+  line-height: 20px;
+  left: 0;
+  padding: 0px;
+}
+.extension-cw--tool--div-mount > div {
+  font-size: 10px;
+}
+.extension-cw--tool--div-mount > div > span {
+  padding: 1px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0 2px;
+  border: 1px solid black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.extension-cw--tool--div-mount > div > span[disabled] {
+  color: #666;
+}
+.extension-cw--progress--toolbar-enable {
+  position: absolute;
+  height: 3px;
+  left: 0;
+  bottom: -3px;
+  background: yellow;
+  animation-name: toolbarprogress;
+  animation-duration: 0.8s;
+  animation-iteration-count: 1;
+}
+@keyframes toolbarprogress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+.extension-cw--sidebar--wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  background: rgba(255, 255, 255, 0.9);
+  border-right: 1px solid rgba(0, 0, 0, 0.8);
+  height: 100%;
+  z-index: 99999999999;
+  display: flex;
+  font-size: 11px;
+  flex-direction: column;
+}
+.extension-cw--sidebar--wrapper label {
+  font-weight: normal;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--toolbar {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  line-height: 30px;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--toolbar > a {
+  padding: 0 2px;
+  display: inline-block;
+  font-size: 11px;
+  line-height: 20px;
+  border: 1px solid #0061cf;
+  color: black;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--toolbar > a.selected {
+  background: #0061cf;
+  color: white;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--wordlist {
+  overflow: auto;
+  font-size: 14px;
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--wordlist > div {
+  padding-left: 10px;
+  transition: all 0.3s;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--wordlist > div:hover {
+  background: #0061cf;
+  color: #fff;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--wordlist > div.extension-cw--sidebar--known-word {
+  color: #999;
+}
+.extension-cw--sidebar--wrapper .extension-cw--sidebar--wordlist > div.extension-cw--sidebar--known-word:hover {
+  color: #ccc;
+}
+
+/*# sourceMappingURL=style.css.map*/

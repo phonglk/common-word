@@ -1,0 +1,312 @@
+/*********** Search google ************/
+.search {
+    background: #fff;
+    float: right;
+    height: 23px;
+    margin-top: 5px;
+    padding: 0 25px 0 6px;
+    position: relative;
+}
+.search form input {
+    background: none repeat scroll 0 0 #fff;
+    border: medium none;
+    color: #585D66;
+    font-size: 11px;
+    padding-top: 5px;
+}
+.search form .btn_search {
+    background: url("../images/buttonsearch.png") no-repeat scroll 0 0 #fff;
+    border: medium none;
+    display: block;
+    height: 14px;
+    position: absolute;
+    right: 6px;
+    text-indent: -9999px;
+    top: 5px;
+    width: 14px;
+}
+
+/*********** Editor's pick ***********/
+.container {
+	clear: both;
+}
+
+/*
+	root element for the scrollable.
+	when scrolling occurs this element stays still.
+*/
+.scrollable {
+	position:relative;
+	overflow:hidden;
+	width:961px !important;
+	height:220px;
+	margin-bottom:20px;
+}
+
+/*
+	root element for scrollable items. Must be absolutely positioned
+	and it should have a extremely large width to accomodate scrollable items.
+	it's enough that you set the width and height for the root element and
+	not for this element.
+*/
+.scrollable .items {
+	/* this cannot be too large */
+	width:20000em;
+	position:absolute;
+	clear:both;
+}
+
+/* single scrollable item */
+.scrollable .block-image {
+	float:left;
+	margin:20px 5px 20px 0px;
+	background-color:#eee;
+	width:156px;
+	height:134px;
+	text-align:left;
+	/*-moz-border-radius:4px;
+	-webkit-border-radius:4px;*/
+}
+.scrollable .block-image a img{
+	padding:2px;
+	border:1px solid #ccc;
+}
+/*.scrollable .block-image a span{padding:0 2px;}*/
+
+/* active item */
+.scrollable .active {
+	border:2px solid #000;
+	position:relative;
+	cursor:default;
+}
+
+
+/* this makes it possible to add next button beside scrollable */
+.scrollable {
+	float:left;	
+}
+
+/*********** Comment ***********/
+.captcha-div a{
+	color: #06C;
+	text-decoration: underline;
+}
+.captcha-div a:hover, a:focus {
+	color: #09f;
+}
+.hint {
+ 	margin-top: 10px;
+ 	margin-bottom: 10px;
+ 	color: #999;clear:both;white-space:nowrap;
+ }
+.errorSummary {
+ 	clear: both;
+ 	color: red;
+ }
+.errorSummary p {
+	float: none !important;
+}
+.errorSummary ul {
+ 	margin-left: 10px;
+}
+
+/********** Print email share **********/
+.user-interaction li {
+	float:left;
+}
+
+/********** Comment **********/
+.comment-block {
+	border-top: 1px solid #CCC;
+	font-size: 13px;
+	/* padding: 10px; */
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.comment-block ul {
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+}
+.comment-block .comment-item {
+	border-bottom: 1px solid #D7D7D7;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+.comment-block .title {
+	width: 100%;
+	margin-top: 5px;
+	color: #015D99
+}
+.comment-block .content {
+	width: 100%;
+	margin-right: 10px;
+	padding: 0;
+	margin-top: 10px;
+	line-height: 16px;
+}
+.comment-block .date {
+	width: 100%;
+	margin-top: 10px;
+	color: #999999;
+	font-size: 11px;
+}
+.comment-block .author {
+	margin-top: 10px;
+	text-align: right;
+	color: #999999;
+	font-weight: bold;
+}
+.comment-block .line {
+	float: left;
+	height: 1px;
+	width: 620px;
+}
+.comment-block .pager {
+	float: left;
+}
+.comment-block .yiiPager {
+	float: left;
+	border: none;
+	margin-bottom: 20px;
+}
+
+/* Content detail */
+.slider-wrapper {
+	background: #000;
+	padding: 5px;
+	position: relative;
+}
+
+.nivo-directionNav a {
+	bottom: -32px !important;
+}
+
+.nivo-main-image {
+    /*
+    position:absolute;
+	top:0px;
+	left:0px;	
+    */
+    margin: 0 auto; 
+}
+
+.nivo-controlNav {
+	padding: 2px !important;
+	height: 15px;
+	z-index: 10;
+	position: absolute;
+	text-align: center !important;
+	bottom: 355px;
+	left: 3px;
+	/*background: #000;*/
+	height: 20px;
+	border-radius: 2px;
+	opacity: 0.6;
+}
+
+.nivo-controlNav a {
+    background: none repeat scroll 0 0 transparent !important;
+    text-indent: 0 !important;
+    color: #000;
+    width: 10px !important;
+    height:15px !important;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 2px;
+    padding: 2px 10px !important;
+    border: 1px solid #000 !important;
+}
+
+.nivo-controlNav a:hover, a.active{
+    background: #CC0000 !important;
+    padding: 2px 10px !important;
+    border: 1px solid #000 !important;
+}
+
+.nivoSlider {
+	margin-bottom: 0px !important;
+}
+.nivo-caption {
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0px;
+}
+
+.nivo-caption span {
+	font-size: 13px;
+	float: right;
+	margin-right: 5px;
+}
+
+.nivo-slice 
+{
+    position: absolute;
+    top: 0px;
+    text-align:center;
+}
+
+.nivo-slice-img
+{
+    text-align:center;
+    margin: 0 auto; 
+}
+
+.nivo-slice img
+{
+    text-align:center;
+    margin: 0 auto; 
+    width: auto !important;
+    position: relative !important;
+}
+
+#slider {
+	height: 382px;
+	text-align: center;
+}
+	    
+#slider img {
+	height:382px !important;
+}
+
+/* Comment */
+.frm-comment #UserCommentForm_email {width:350px !important;}
+.frm-comment #UserCommentForm_title {width:615px !important;}
+
+.background-image {background-color:#ccc;}
+.background-image img {display:block;margin:0 auto;}
+
+/* hack ie6 */
+/* home */
+.block-news-1 .title{_margin-bottom:15px;}
+.block-news-1 .title a .span.ui-icon{_margin-right:4px;}
+.block-news-1.first .title a .span.ui-icon{_margin-right:0px;}
+#footer .left-div .left{_margin-left:30px;}
+/* home menu */
+#nav li{_background:url(../images/line_nav1.png) 0 bottom no-repeat;}
+/*#nav li{background: url(../images/line_nav_tet.png) 0 bottom no-repeat;}*/
+/* home left */
+.ttnservice{_width:296px;_margin:0 auto;}
+
+/* footer */
+#footer .nav-footer-1{_width:780px;}
+#footer .nav-footer-1 li a{_display:block;_float:left}
+#footer .left-div{_clear:left}
+#footer .nav-footer-2 li a{_display:inline;}
+#footer .nav-footer-2 li{_display:inline;}
+
+/* category */
+.lst-news{_overflow:hidden;_clear:both;_min-height:120px;_height:auto !important;_height:130px;}
+.yiiPager li a{_float:left}
+.right_1 .most-media{_margin-top:5px !important;_overflow:hidden;_min-height:120px;_height:auto !important;_height:120px;}
+.right_1 .most-media .image{_width:134px;}
+.right_1 .most-media .image a{_float:left}
+.right_1 .most-media .title{_width:130px;_margin-top:0px;}
+/* detail */
+.share-article ul,.news-more{_clear:both;}
+.block-news-3{_width:440px;}
+.share-article{_display:none;}
+.main-content-inner{_width:440px !important}
+.related-media .scroll{_width:150px;}
+form#usercomment-form{_clear:both;_margin-top:10px;}
+
+
