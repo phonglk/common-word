@@ -23,6 +23,7 @@ module.exports = {
   entry: {
     'content': './src/content/index.js',
     'background': './src/background/index.js',
+    'popup': './src/popup/index.js',
   },
   output: {
     path: path.join(__dirname, './dist/'),
@@ -77,6 +78,10 @@ module.exports = {
       {
         from: path.join(__dirname, './src/background/background.html'),
         to: './background.html'
+      },
+      {
+        from: path.join(__dirname, './src/popup/popup.html'),
+        to: './popup.html'
       },
     ]),
   ]

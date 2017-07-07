@@ -4,7 +4,9 @@
   "description": "Common Word Extension - Learn English",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "bash ./example/serve",
+    "build-dev-watch": "webpack --progress --watch --colors"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^6.2.10",
     "babel-preset-modern-browsers": "^8.0.0",
     "babel-preset-react": "^6.22.0",

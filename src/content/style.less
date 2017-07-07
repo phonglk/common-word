@@ -140,3 +140,34 @@
     }
   }
 }
+
+#cw-popup-mount {
+  font-family: Arial, Helvetica, sans-serif;
+  .cw-popup {
+    position: fixed;
+    transition: all 0.1s;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 8px;
+    opacity: 1;
+    visibility: visible;
+    &.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    a {
+      cursor: pointer;
+      color: black;
+    }
+    iframe {
+      width: 248px;
+      height: 259px;
+      border: 0;
+      padding: 0;
+    }
+    .lb-credit {
+      text-align: right;
+      background: #999;
+    }
+  }
+}

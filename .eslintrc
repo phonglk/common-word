@@ -3,7 +3,12 @@
   "rules": {
       "space-after-keywords": "off",
       "space-before-keywords": "off",
-      "space-return-throw-case": "off"
+      "space-return-throw-case": "off",
+      "import/no-extraneous-dependencies": 0,
+      "import/no-unresolved": 0,
+      "import/extensions": 0,
+      "react/jsx-filename-extension": 0,
+      "experimentalDecorators": 0
   },
   "globals": {
     "_": true,
@@ -11,5 +16,6 @@
     "document": true,
     "window": true,
     "debug": true
-  }
+  },
+  "parser": "babel-eslint"
 }

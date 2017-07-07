@@ -1,3 +1,4 @@
+// wtf
 export async function sendMessage(msg) {
   return new Promise((resolve) => {
     chrome.extension.sendMessage(msg, params => resolve(params));

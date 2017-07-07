@@ -1,20 +1,20 @@
 import findAndReplaceDOMText from 'findandreplacedomtext';
 import _ from 'lodash';
-// import isUndefined from 'lodash/isUndefined';
-import { getKnownList } from '../common/word-storage';
+import { getKnownList, getWordList } from '../common/word-storage';
 import { info } from '../common/log';
-import { addMessageListener, INIT_IN_PAGE_CONNECTION, sendMessage } from '../common/communication';
-import { isTopWindow, getTopWindow, isZeroIframe } from './window-helper';
+import { wordPopup } from './popup.component';
+// import { addMessageListener, INIT_IN_PAGE_CONNECTION, sendMessage } from '../common/communication';
+// import { isTopWindow, getTopWindow, isZeroIframe } from './window-helper';
 import {
   mouseenterHandler,
   mouseleaveHandler,
 } from './event-handlers';
-import {
-  mountSideBar,
-} from './mounting';
-import {
-  EVENT_BROWSER_ACTION_CLICK,
-} from '../const/event';
+// import {
+//   mountSideBar,
+// } from './mounting';
+// import {
+//   EVENT_BROWSER_ACTION_CLICK,
+// } from '../const/event';
 import {
   CLASS_UNKNOWN_WORD,
   CLASS_KNOWN_WORD,
@@ -23,14 +23,14 @@ import {
   PROP_WORD,
 } from '../const/style';
 
-function nerverHappen() {
-  require('./style.less');
+import './style.less';
+
+function mouseEnterHandler(word, element, evt) {
+  // const { clientX: left, clientY: top } = evt;
+  const { left, top, height } = evt.target.getBoundingClientRect();
+  const pTop = top + height;
+  wordPopup({ word, position: [left, pTop], element, mohandler: this });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-
-});
-
 
 const knownListMap = {};
 const wordListMap = {};
@@ -55,14 +55,9 @@ async function highlight() {
         replacementNode.classList.add(CLASS_UNKNOWN_WORD);
       }
       replacementNode.setAttribute(PROP_WORD, word);
-
-      replacementNode.addEventListener('mouseenter', mouseenterHandler.bind(
-        { wordListMap }, word, replacementNode));
-      replacementNode.addEventListener('mouseleave', mouseleaveHandler.bind(null, word, replacementNode));
-      window.top.__cw__addWord({
-        ...wordListMap[word],
-        isKnown: !_.isUndefined(knownListMap[word]),
-      });
+      const handler = mouseEnterHandler.bind(null, word, replacementNode);
+      replacementNode.addEventListener('mouseenter', handler);
+      // replacementNode.addEventListener('mouseleave', mouseleaveHandler.bind(null, word, replacementNode));
       return replacementNode;
     },
     filterElements: (el =>
@@ -72,49 +67,45 @@ async function highlight() {
   info(`Matched ${count} words`);
 }
 
-async function active(params) {
-  info('active', window.location.href);
-  if (isTopWindow()) {
-    // mountSideBar();
-    sendMessage({
-      type: INIT_IN_PAGE_CONNECTION,
-      isTop: true,
+async function active() {
+  const { list } = await getKnownList();
+  list.forEach((knownWord) => {
+    knownListMap[knownWord.word.toLowerCase()] = knownWord;
+  });
+  if (_.isEmpty(wordListMap)) {
+    const words = [];
+    const wordList = await getWordList();
+    wordList.list.forEach((word) => {
+      wordListMap[word.word] = word;
+      if (!knownListMap[word.word]) {
+        words.push(word.word);
+      }
     });
-  } else if (isZeroIframe()) {
-    info('ignore content due to zero size iframe');
-    return;
-  } else {
-    // setTimeout(active.bind(null, params), 50);
-    sendMessage({
-      type: INIT_IN_PAGE_CONNECTION,
-    });
+    wordListRegExp = new RegExp(`\\b(${words.join('|')})\\b`, 'gi');
   }
-  // const { list } = await getKnownList();
-  // list.forEach((knownWord) => {
-  //   knownListMap[knownWord.word.toLowerCase()] = knownWord;
-  // });
-  // if (_.isEmpty(wordListMap)) {
-  //   const words = [];
-  //   wordList.list.forEach((word) => {
-  //     wordListMap[word.word] = word;
-  //     words.push(word.word);
-  //   });
-  //   wordListRegExp = new RegExp(`\\b(${words.join('|')})\\b`, 'gi');
-  // }
 
-  // highlight();
-}
-
-function addListener() {
-  addMessageListener((msg, sender, sendResponse) => {
-    if (msg.event && msg.event === EVENT_BROWSER_ACTION_CLICK) {
-      const wordList = msg.wordList;
-      active({ wordList });
-    }
-    sendResponse({});
+  highlight();
+  window.addEventListener('scroll', () => {
+    wordPopup({ visible: false });
   });
 }
 
-addListener();
+function isInjected() {
+  const flag = document.querySelector('#cw_injected_flag');
+  if (flag === null) {
+    const e = document.createElement('div');
+    e.setAttribute('id', 'cw_injected_flag');
+    document.body.appendChild(e);
+    return false;
+  }
+  return true;
+}
 
-info('CW_Content');
+info('CW_Content_Inject');
+
+if (!isInjected()) {
+  active();
+}
+
+
+

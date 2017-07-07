@@ -125,5 +125,35 @@
 .extension-cw--sidebar--wrapper .extension-cw--sidebar--wordlist > div.extension-cw--sidebar--known-word:hover {
   color: #ccc;
 }
+#cw-popup-mount {
+  font-family: Arial, Helvetica, sans-serif;
+}
+#cw-popup-mount .cw-popup {
+  position: fixed;
+  transition: all 0.1s;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 8px;
+  opacity: 1;
+  visibility: visible;
+}
+#cw-popup-mount .cw-popup.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+#cw-popup-mount .cw-popup a {
+  cursor: pointer;
+  color: black;
+}
+#cw-popup-mount .cw-popup iframe {
+  width: 248px;
+  height: 259px;
+  border: 0;
+  padding: 0;
+}
+#cw-popup-mount .cw-popup .lb-credit {
+  text-align: right;
+  background: #999;
+}
 
 /*# sourceMappingURL=style.css.map*/

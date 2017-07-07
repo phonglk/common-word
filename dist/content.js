@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -103,7 +103,9 @@ function getConsole() {
 }
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */,
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -207,7 +209,158 @@ exports._set = _set;
 exports._get = _get;
 
 /***/ }),
-/* 2 */
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+let highlight = function () {
+  var _ref = _asyncToGenerator(function* () {
+    let count = 0;
+    (0, _findandreplacedomtext2.default)(document.body, {
+      find: wordListRegExp,
+      preset: 'prose',
+      replace: function replace(s) {
+        const word = s.text.toLowerCase();
+        if (_lodash2.default.isUndefined(wordListMap[word])) return s.text;
+        count += 1;
+        const replacementNode = document.createElement('span');
+        const textNode = document.createTextNode(s.text);
+        replacementNode.appendChild(textNode);
+        replacementNode.classList.add(_style.CLASS_WORD);
+        if (knownListMap[word]) {
+          replacementNode.classList.add(_style.CLASS_KNOWN_WORD);
+        } else {
+          replacementNode.classList.add(_style.CLASS_UNKNOWN_WORD);
+        }
+        replacementNode.setAttribute(_style.PROP_WORD, word);
+        const handler = mouseEnterHandler.bind(null, word, replacementNode);
+        replacementNode.addEventListener('mouseenter', handler);
+        // replacementNode.addEventListener('mouseleave', mouseleaveHandler.bind(null, word, replacementNode));
+        return replacementNode;
+      },
+      filterElements: function filterElements(el) {
+        return NON_PROSE_ELEMENTS.indexOf(el.nodeName.toLowerCase()) === -1 && el.className !== _style.CLASS_SIDEBAR_WRAP;
+      }
+    });
+    (0, _log.info)(`Matched ${count} words`);
+  });
+
+  return function highlight() {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+let active = function () {
+  var _ref2 = _asyncToGenerator(function* () {
+    const { list } = yield (0, _wordStorage.getKnownList)();
+    list.forEach(function (knownWord) {
+      knownListMap[knownWord.word.toLowerCase()] = knownWord;
+    });
+    if (_lodash2.default.isEmpty(wordListMap)) {
+      const words = [];
+      const wordList = yield (0, _wordStorage.getWordList)();
+      wordList.list.forEach(function (word) {
+        wordListMap[word.word] = word;
+        if (!knownListMap[word.word]) {
+          words.push(word.word);
+        }
+      });
+      wordListRegExp = new RegExp(`\\b(${words.join('|')})\\b`, 'gi');
+    }
+
+    highlight();
+    window.addEventListener('scroll', function () {
+      (0, _popup.wordPopup)({ visible: false });
+    });
+  });
+
+  return function active() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var _findandreplacedomtext = __webpack_require__(24);
+
+var _findandreplacedomtext2 = _interopRequireDefault(_findandreplacedomtext);
+
+var _lodash = __webpack_require__(25);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _wordStorage = __webpack_require__(22);
+
+var _log = __webpack_require__(0);
+
+var _popup = __webpack_require__(35);
+
+var _eventHandlers = __webpack_require__(23);
+
+var _style = __webpack_require__(19);
+
+__webpack_require__(31);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+// import { addMessageListener, INIT_IN_PAGE_CONNECTION, sendMessage } from '../common/communication';
+// import { isTopWindow, getTopWindow, isZeroIframe } from './window-helper';
+
+// import {
+//   mountSideBar,
+// } from './mounting';
+// import {
+//   EVENT_BROWSER_ACTION_CLICK,
+// } from '../const/event';
+
+
+function mouseEnterHandler(word, element, evt) {
+  // const { clientX: left, clientY: top } = evt;
+  const { left, top, height } = evt.target.getBoundingClientRect();
+  const pTop = top + height;
+  (0, _popup.wordPopup)({ word, position: [left, pTop], element, mohandler: this });
+}
+
+const knownListMap = {};
+const wordListMap = {};
+let wordListRegExp = null;
+const NON_PROSE_ELEMENTS = ['br', 'hr', 'script', 'noscript', 'style', 'img', 'video', 'audio', 'canvas', 'svg', 'map', 'object', 'input', 'textarea', 'select', 'option', 'optgroup', 'button'];
+
+
+function isInjected() {
+  const flag = document.querySelector('#cw_injected_flag');
+  if (flag === null) {
+    const e = document.createElement('div');
+    e.setAttribute('id', 'cw_injected_flag');
+    document.body.appendChild(e);
+    return false;
+  }
+  return true;
+}
+
+(0, _log.info)('CW_Content_Inject');
+
+if (!isInjected()) {
+  active();
+}
+
+/***/ }),
+/* 18 */,
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -238,73 +391,19 @@ const CLASS_SIDEBAR_TOOLBAR = exports.CLASS_SIDEBAR_TOOLBAR = pre('sidebar--tool
 const PROP_WORD = exports.PROP_WORD = pre('word');
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-let sendMessage = exports.sendMessage = function () {
-  var _ref = _asyncToGenerator(function* (msg) {
-    return new Promise(function (resolve) {
-      chrome.extension.sendMessage(msg, function (params) {
-        return resolve(params);
-      });
-    });
-  });
-
-  return function sendMessage(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-exports.sendMessageToTab = sendMessageToTab;
-exports.addMessageListener = addMessageListener;
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function sendMessageToTab(tabId, msg) {
-  chrome.tabs.sendMessage(tabId, msg);
-}
-
-function addMessageListener(listener /* fn(msg, sender, sendResponse) */) {
-  chrome.runtime.onMessage.addListener(listener);
-}
-
-const INIT_IN_PAGE_CONNECTION = exports.INIT_IN_PAGE_CONNECTION = 'INIT_IN_PAGE_CONNECTION';
+module.exports = (__webpack_require__(21))(0);
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-const EVENT_BROWSER_ACTION_CLICK = exports.EVENT_BROWSER_ACTION_CLICK = 'EVENT_BROWSER_ACTION_CLICK';
-
-/***/ }),
-/* 6 */,
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = (__webpack_require__(8))(0);
-
-/***/ }),
-/* 8 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = standard;
 
 /***/ }),
-/* 9 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -313,7 +412,7 @@ module.exports = standard;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateKnownWord = exports.getKnownList = undefined;
+exports.getWordList = exports.updateKnownWord = exports.getKnownList = undefined;
 
 let getKnownList = exports.getKnownList = function () {
   var _ref = _asyncToGenerator(function* () {
@@ -330,7 +429,7 @@ let getKnownList = exports.getKnownList = function () {
 
 let updateKnownWord = exports.updateKnownWord = function () {
   var _ref2 = _asyncToGenerator(function* ({ word }) {
-    const { list, knownList, selectedWordList } = getKnownList();
+    const { list, knownList, selectedWordList } = yield getKnownList();
     if (!list.find(function (entry) {
       return entry.word === word;
     })) {
@@ -347,76 +446,23 @@ let updateKnownWord = exports.updateKnownWord = function () {
   };
 }();
 
-var _storage = __webpack_require__(1);
+let getWordList = exports.getWordList = function () {
+  var _ref3 = _asyncToGenerator(function* () {
+    const wordList = yield (0, _storage.getLocal)('currentWordList');
+    return wordList;
+  });
+
+  return function getWordList() {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var _storage = __webpack_require__(3);
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.bindToolbar = bindToolbar;
-exports.mountSideBar = mountSideBar;
-exports.removeToolbar = removeToolbar;
-
-var _reactDom = __webpack_require__(29);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _react = __webpack_require__(7);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _toolbar = __webpack_require__(23);
-
-var _toolbar2 = _interopRequireDefault(_toolbar);
-
-var _sidebar = __webpack_require__(22);
-
-var _sidebar2 = _interopRequireDefault(_sidebar);
-
-var _style = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function bindToolbar({ word, targetNode, event, wordListMap }, actions) {
-  const mountNode = document.createElement('div');
-  mountNode.classList.add(_style.CLASS_TOOLBAR_MOUNT_DIV);
-  targetNode.appendChild(mountNode);
-  _reactDom2.default.render(_react2.default.createElement(_toolbar2.default, { word: word, node: targetNode, actions: actions, meta: wordListMap[word] }), mountNode);
-  return mountNode;
-}
-
-function mountSideBar() {
-  window.top.__cw__words = [];
-  window.top.__cw__words_count = 0;
-  const mountNode = document.createElement('div');
-  document.body.appendChild(mountNode);
-  _reactDom2.default.render(_react2.default.createElement(_sidebar2.default, { window: window.top }), mountNode);
-  return mountNode;
-}
-
-function removeToolbar({ targetNode }) {
-  const mountNode = targetNode.querySelector(`.${_style.CLASS_TOOLBAR_MOUNT_DIV}`);
-  if (mountNode) {
-    _reactDom2.default.unmountComponentAtNode(mountNode);
-    mountNode.remove();
-    return true;
-  }
-  return false;
-}
-
-/***/ }),
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -428,9 +474,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.mouseenterHandler = mouseenterHandler;
 exports.mouseleaveHandler = mouseleaveHandler;
 
-var _actions = __webpack_require__(21);
+var _actions = __webpack_require__(26);
 
-var _style = __webpack_require__(2);
+var _style = __webpack_require__(19);
 
 function mouseenterHandler(word, replacementNode, event) {
   const targetNode = event.target;
@@ -454,38 +500,7 @@ function mouseleaveHandler(word, targetNode, event) {
 }
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.isTopWindow = isTopWindow;
-exports.getTopWindow = getTopWindow;
-exports.isZeroIframe = isZeroIframe;
-function isTopWindow() {
-  return window === window.top;
-}
-
-function getTopWindow() {
-  return window.top;
-}
-
-function isZeroIframe() {
-  return window.innerWidth === 0 && window.innerHeight === 0;
-}
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 17 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -1127,15 +1142,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 18 */,
-/* 19 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(8))(225);
+module.exports = (__webpack_require__(21))(225);
 
 /***/ }),
-/* 20 */,
-/* 21 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1193,11 +1206,11 @@ exports.removeProgressBar = removeProgressBar;
 
 var _log = __webpack_require__(0);
 
-var _mounting = __webpack_require__(10);
+var _mounting = __webpack_require__(27);
 
-var _storage = __webpack_require__(1);
+var _storage = __webpack_require__(3);
 
-var _style = __webpack_require__(2);
+var _style = __webpack_require__(19);
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -1235,7 +1248,68 @@ function removeProgressBar({ targetNode }) {
 }
 
 /***/ }),
-/* 22 */
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.bindToolbar = bindToolbar;
+exports.mountSideBar = mountSideBar;
+exports.removeToolbar = removeToolbar;
+
+var _reactDom = __webpack_require__(30);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _toolbar = __webpack_require__(29);
+
+var _toolbar2 = _interopRequireDefault(_toolbar);
+
+var _sidebar = __webpack_require__(28);
+
+var _sidebar2 = _interopRequireDefault(_sidebar);
+
+var _style = __webpack_require__(19);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function bindToolbar({ word, targetNode, event, wordListMap }, actions) {
+  const mountNode = document.createElement('div');
+  mountNode.classList.add(_style.CLASS_TOOLBAR_MOUNT_DIV);
+  targetNode.appendChild(mountNode);
+  _reactDom2.default.render(_react2.default.createElement(_toolbar2.default, { word: word, node: targetNode, actions: actions, meta: wordListMap[word] }), mountNode);
+  return mountNode;
+}
+
+function mountSideBar() {
+  window.top.__cw__words = [];
+  window.top.__cw__words_count = 0;
+  const mountNode = document.createElement('div');
+  document.body.appendChild(mountNode);
+  _reactDom2.default.render(_react2.default.createElement(_sidebar2.default, { window: window.top }), mountNode);
+  return mountNode;
+}
+
+function removeToolbar({ targetNode }) {
+  const mountNode = targetNode.querySelector(`.${_style.CLASS_TOOLBAR_MOUNT_DIV}`);
+  if (mountNode) {
+    _reactDom2.default.unmountComponentAtNode(mountNode);
+    mountNode.remove();
+    return true;
+  }
+  return false;
+}
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1247,15 +1321,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(20);
 
 var _react2 = _interopRequireDefault(_react);
 
 var _log = __webpack_require__(0);
 
-var _wordStorage = __webpack_require__(9);
+var _wordStorage = __webpack_require__(22);
 
-var _style = __webpack_require__(2);
+var _style = __webpack_require__(19);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1384,7 +1458,7 @@ class SideBar extends _react2.default.Component {
 exports.default = SideBar;
 
 /***/ }),
-/* 23 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1394,7 +1468,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(20);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1436,160 +1510,151 @@ class Toolbar extends _react2.default.Component {
 exports.default = Toolbar;
 
 /***/ }),
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(8))(14);
+module.exports = (__webpack_require__(21))(14);
 
 /***/ }),
-/* 30 */,
 /* 31 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.wordPopup = wordPopup;
 
-let highlight = function () {
-  var _ref = _asyncToGenerator(function* () {
-    let count = 0;
-    (0, _findandreplacedomtext2.default)(document.body, {
-      find: wordListRegExp,
-      preset: 'prose',
-      replace: function replace(s) {
-        const word = s.text.toLowerCase();
-        if (_lodash2.default.isUndefined(wordListMap[word])) return s.text;
-        count += 1;
-        const replacementNode = document.createElement('span');
-        const textNode = document.createTextNode(s.text);
-        replacementNode.appendChild(textNode);
-        replacementNode.classList.add(_style.CLASS_WORD);
-        if (knownListMap[word]) {
-          replacementNode.classList.add(_style.CLASS_KNOWN_WORD);
-        } else {
-          replacementNode.classList.add(_style.CLASS_UNKNOWN_WORD);
-        }
-        replacementNode.setAttribute(_style.PROP_WORD, word);
+var _react = __webpack_require__(20);
 
-        replacementNode.addEventListener('mouseenter', _eventHandlers.mouseenterHandler.bind({ wordListMap }, word, replacementNode));
-        replacementNode.addEventListener('mouseleave', _eventHandlers.mouseleaveHandler.bind(null, word, replacementNode));
-        window.top.__cw__addWord(_extends({}, wordListMap[word], {
-          isKnown: !_lodash2.default.isUndefined(knownListMap[word])
-        }));
-        return replacementNode;
-      },
-      filterElements: function filterElements(el) {
-        return NON_PROSE_ELEMENTS.indexOf(el.nodeName.toLowerCase()) === -1 && el.className !== _style.CLASS_SIDEBAR_WRAP;
-      }
-    });
-    (0, _log.info)(`Matched ${count} words`);
-  });
+var _react2 = _interopRequireDefault(_react);
 
-  return function highlight() {
-    return _ref.apply(this, arguments);
-  };
-}();
+var _reactDom = __webpack_require__(30);
 
-let active = function () {
-  var _ref2 = _asyncToGenerator(function* (params) {
-    (0, _log.info)('active', window.location.href);
-    if ((0, _windowHelper.isTopWindow)()) {
-      // mountSideBar();
-      (0, _communication.sendMessage)({
-        type: _communication.INIT_IN_PAGE_CONNECTION,
-        isTop: true
-      });
-    } else if ((0, _windowHelper.isZeroIframe)()) {
-      (0, _log.info)('ignore content due to zero size iframe');
-      return;
-    } else {
-      // setTimeout(active.bind(null, params), 50);
-      (0, _communication.sendMessage)({
-        type: _communication.INIT_IN_PAGE_CONNECTION
-      });
-    }
-    // const { list } = await getKnownList();
-    // list.forEach((knownWord) => {
-    //   knownListMap[knownWord.word.toLowerCase()] = knownWord;
-    // });
-    // if (_.isEmpty(wordListMap)) {
-    //   const words = [];
-    //   wordList.list.forEach((word) => {
-    //     wordListMap[word.word] = word;
-    //     words.push(word.word);
-    //   });
-    //   wordListRegExp = new RegExp(`\\b(${words.join('|')})\\b`, 'gi');
-    // }
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
-    // highlight();
-  });
-
-  return function active(_x) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-var _findandreplacedomtext = __webpack_require__(17);
-
-var _findandreplacedomtext2 = _interopRequireDefault(_findandreplacedomtext);
-
-var _lodash = __webpack_require__(19);
+var _lodash = __webpack_require__(25);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _wordStorage = __webpack_require__(9);
+var _style = __webpack_require__(19);
 
-var _log = __webpack_require__(0);
-
-var _communication = __webpack_require__(4);
-
-var _windowHelper = __webpack_require__(15);
-
-var _eventHandlers = __webpack_require__(14);
-
-var _mounting = __webpack_require__(10);
-
-var _event = __webpack_require__(5);
-
-var _style = __webpack_require__(2);
+var _wordStorage = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-// import isUndefined from 'lodash/isUndefined';
+const initState = {
+  selfClose: false,
+  openDict: false
+};
 
+class Popup extends _react.Component {
+  constructor(props) {
+    var _this;
 
-function nerverHappen() {
-  __webpack_require__(16);
-}
+    _this = super(props);
 
-document.addEventListener('DOMContentLoaded', function () {});
+    this.knownClick = function () {
+      const { element, mohandler, word } = _this.props;
+      element.parentNode.replaceChild(element.childNodes[0].cloneNode(true), element);
+      element.removeEventListener('mouseenter', mohandler);
+      (0, _wordStorage.updateKnownWord)({ word });
+      _this.setState({ selfClose: true });
+    };
 
-const knownListMap = {};
-const wordListMap = {};
-let wordListRegExp = null;
-const NON_PROSE_ELEMENTS = ['br', 'hr', 'script', 'noscript', 'style', 'img', 'video', 'audio', 'canvas', 'svg', 'map', 'object', 'input', 'textarea', 'select', 'option', 'optgroup', 'button'];
+    this.dictClick = function () {
+      _this.setState({ openDict: true });
+    };
 
+    this.state = initState;
+  }
 
-function addListener() {
-  (0, _communication.addMessageListener)(function (msg, sender, sendResponse) {
-    if (msg.event && msg.event === _event.EVENT_BROWSER_ACTION_CLICK) {
-      const wordList = msg.wordList;
-      active({ wordList });
+  componentWillReceiveProps(nextProps) {
+    if (!_lodash2.default.isEqual(nextProps.word, this.props.word)) {
+      this.setState(initState);
     }
-    sendResponse({});
-  });
+  }
+
+  render() {
+    const { word, position: [left, top], visible } = this.props;
+    const { selfClose, openDict } = this.state;
+    const style = {
+      left,
+      top
+    };
+    let className = 'cw-popup';
+    if (visible === false || selfClose === true) className += ' hidden';
+    return _react2.default.createElement(
+      'div',
+      { className: className, style: style },
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'a',
+          { onClick: this.knownClick },
+          'Mark as Known'
+        )
+      ),
+      !openDict && _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'a',
+          { onClick: this.dictClick },
+          'Open dictionary'
+        )
+      ),
+      openDict && _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement('iframe', { src: `http://dict.laban.vn/widget/search?type=1&query=${word}` }),
+        _react2.default.createElement(
+          'div',
+          { className: 'lb-credit' },
+          _react2.default.createElement('img', { src: 'http://stc.laban.vn/dictionary/images/plugin/powered.png' })
+        )
+      )
+    );
+  }
 }
 
-addListener();
+Popup.propTypes = {
+  word: _react.PropTypes.string,
+  position: _react.PropTypes.array,
+  visible: _react.PropTypes.bool,
+  element: _react.PropTypes.node,
+  mohandler: _react.PropTypes.func
+};
 
-(0, _log.info)('CW_Content');
+Popup.defaultProps = {
+  visible: true,
+  word: '',
+  position: [0, 0]
+};
+
+function wordPopup(params) {
+  let element = document.querySelector('#cw-popup-mount');
+  if (element === null) {
+    element = document.createElement('div');
+    element.setAttribute('id', 'cw-popup-mount');
+    document.body.appendChild(element);
+  }
+  _reactDom2.default.render(_react2.default.createElement(Popup, params), element);
+}
+
+exports.default = Popup;
 
 /***/ })
 /******/ ]);

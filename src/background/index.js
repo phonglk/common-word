@@ -13,6 +13,7 @@ import {
 } from '../const/event';
 
 const yamlParser = new Parser();
+let wordList;
 
 async function getSelectedWordList() {
   const selectedListId = await getSync('selectedWordList');
@@ -36,53 +37,17 @@ async function getSelectedWordList() {
   return newCachedWordList;
 }
 
-function bindBrowserAction({ wordList }) {
+function bindBrowserAction() {
   chrome.browserAction.onClicked.addListener((tab) => {
-    sendMessageToTab(tab.id, {
-      event: EVENT_BROWSER_ACTION_CLICK,
-      wordList,
-    });
-  });
-}
-
-function accommodateInPageConnection() {
-  const inPageConnection = {};
-
-  const getSenderId = sender => `${sender.tab.id}${sender.tab.windowId}`;
-  const getConnectionById = (id) => {
-    if (inPageConnection[id]) return inPageConnection[id];
-    const conn = {
-      connected: false,
-      waitingReponses: [],
-    };
-    inPageConnection[id] = conn;
-    return conn;
-  };
-
-  addMessageListener((payload, sender, sendResponse) => {
-    if (payload.type === INIT_IN_PAGE_CONNECTION) {
-      const id = getSenderId(sender);
-      const cnn = getConnectionById(id);
-      if (payload.isTop) {
-        cnn.connected = true;
-        sendResponse(true);
-      } else {
-        if (cnn.connected) {
-          sendResponse(true);
-        } else {
-          // HERE
-        }
-      }
-      return true;
-    }
+    info(`Active ${tab.url}`);
+    chrome.tabs.executeScript({ file: 'content.js' });
   });
 }
 
 async function main() {
   await preliminaryCheck();
-  const wordList = await getSelectedWordList();
+  wordList = await getSelectedWordList();
   bindBrowserAction({ wordList });
-  accommodateInPageConnection();
 }
 
 

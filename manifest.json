@@ -4,15 +4,9 @@
          "19": "icos/icon19.png",
          "38": "icos/icon48.png"
       },
-      "default_title": "Active CW"
+      "default_title": "Active CW",
+      "default_popup": "popup.html"
    },
-   "content_scripts": [{
-      "all_frames": true,
-      "js": [ "standard.dll.js", "content.js" ],
-      "css": ["style.css"],
-      "matches": [ "<all_urls>" ],
-      "run_at": "document_start"
-   }],
    "background": {
       "page": "background.html",
       "persistent": true
@@ -26,7 +20,7 @@
    },
    "manifest_version": 2,
    "name": "Common Words",
-   "permissions": [ "storage", "http://*/*", "https://*/*" ],
+   "permissions": [ "storage", "activeTab" ],
    "version": "1",
    "web_accessible_resources": [ "*" ]
 }
